@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>五子棋</title>
+		<style>
+			body{
+				margin: 0;
+				background-color: #ccc;
+			}
+			#canvas{
+				display: block;
+				margin: 20px auto;
+				/*width: 450px;canvas 修改尺寸而不是样式
+				height: 450px;*/
+				background-color: white;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" class="box" height="450" width="450">
+			
+		</canvas>
+	</body>
+	<script>
+		//1.绘制棋盘 绘制直线 
+		var canvas = document.querySelector("#canvas");//获取元素的操作
+		var ctx = canvas.getContext("2d");//获取绘制环境
+		var chesscolor = ['black','white'];//存放颜色的数组
+		var step = 0;//颜色转换
+		var maperr = [];//判断位置是否已经下过棋
+		var model =[//判断模式
+			[1,0],//水平 1表示x往前走 0表示y不走
+			[0,1],//竖直
+			[1,1],//右下左上
+			[1,-1]//右上左下 -1表示y反向走
+			];
+		for(var i = 0; i<14;i++){
+			maperr[i] =[];
+			for(var j = 0;j<14;j++){
+				maperr[i][j]=0;
+			}
+		}
+		
+		//如何绘制 提笔到某个位置 描述绘制环境 开始绘制 提笔
+		for(var i = 0; i<14;i++)
+		{
+			ctx.moveTo(30*(i+1),30);
+			ctx.lineTo(30*(i+1),420);//绘制操作
+			
+			ctx.moveTo(30,30*(i+1));
+			ctx.lineTo(420,30*(i+1));
+			
+		}
+		ctx.stroke();//将之前的所有路径绘制一次
+		//传入颜色代码 绘制棋子
+		function drawchess(x,y,color){
+			ctx.fillStyle = color;//填充颜色修改
+			ctx.beginPath();
+			ctx.arc(x,y,15,0,Math.PI*2,false);//描述绘制路径画圆 x轴 y轴 半径
+			ctx.fill();//填充
+			ctx.stroke();
+			
+		}
+//		drawchess(100,300,"gray");
+//		drawchess(200,250,"white");
+//			console.log(ctx);
+		
+		//2.绘制棋子 如何绘制棋子 如何交互点击下棋
+		canvas.addEventListener('click',function(e){
+			//棋子必须下到交叉点 自描系统
+			var px = Math.floor(e.offsetX/30)-1;
+			var py = Math.floor(e.offsetY/30)-1;//坐标系统化
+			//边界不能放棋子
+			if((px+1)*30 == 0 || (py+1)*30 == 0 | (px+1)*30 == 450 || (py+1)*30 == 450){
+				return ;
+			}
+			
+//			drawchess(e.offsetX,e.offsetY,chesscolor[step%2]);
+			//判断是否位置已经被下过棋
+			if(maperr[px][py]==0){
+				//交互下棋
+				drawchess((px+1)*30,(py+1)*30,chesscolor[step%2]);
+				//友军判断 已经下过棋的地方不下 记录棋盘状态
+				maperr[px][py] = chesscolor[step%2];
+				for(var i=0;i<4;i++){
+					checkwin(px,py,chesscolor[step%2],model[i]);
+				}
+				
+//				checkwinX(px,py,chesscolor[step%2]);
+				step++;
+//				console.log(px,py);
+			}
+			
+		})
+		//3.游戏胜负判断
+		function checkwin(x,y,color,model){
+			var count = 0;
+			console.log(model);
+			for(var i=0;i<5;i++){
+				if(maperr[x-i*model[0]]){
+					if(maperr[x-i*model[0]][y-i*model[1]]==color){
+						count++;
+					}else{
+						break;
+					}
+				}
+				
+			}
+			for(var i=0;i<5;i++){
+				if(maperr[x+i*model[0]]){
+					if(maperr[x+i*model[0]][y+i*model[1]]==color){
+						count++;
+					}else{
+						break;
+					}
+				}
+			}
+			if(count>4){
+				var str = color+" win！";
+					alert(str);
+				}
+			
+		}
+//		function checkwinY(x,y,color){
+//			var count = 0;
+//			for(var i=0;i<5;i++){
+//				if(maperr[x]){
+//					if(maperr[x][y-i]==color){
+//						count++;
+//					}else{
+//						break;
+//					}
+//				}
+//				
+//			}
+//			for(var i=0;i<5;i++){
+//				if(maperr[x]){
+//					if(maperr[x][y+i]==color){
+//						count++;
+//					}else{
+//						break;
+//					}
+//				}
+//			}
+//			console.log('竖直方向上有',count+1,'个',color);
+//		}
+//			function checkwinX(x,y,color){
+//			var count = 0;
+//			for(var i=0;i<5;i++){
+//				if(maperr[x-i]){
+//					if(maperr[x-i][y]==color){
+//						count++;
+//					}else{
+//						break;
+//					}
+//				}
+//				
+//			}
+//			for(var i=0;i<5;i++){
+//				if(maperr[x+i]){
+//					if(maperr[x+i][y]==color){
+//						count++;
+//					}else{
+//						break;
+//					}
+//				}
+//				
+//			}
+//			console.log('水平方向上有',count+1,'个',color);
+////			console.log(x,y,color);
+////			alert('I win')
+//		}
+		
+		
+		
+		
+	</script>
+</html>
