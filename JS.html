@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>练习</title>
+		<style>
+			h2{
+				color: aquamarine;
+			}
+			#submit{
+				color: #00FFFF;
+				border-radius: 30px;
+				
+			}
+		</style>
+	</head>
+	<body>
+		<form name="stu" action="" onsubmit="return funl()">
+			<div align="center">
+				<table border="1" width="50%">
+					<tr>
+						<td colspan="2" align="center"><h2>学生信息</h2></td>
+					</tr>
+					<tr>
+						<td height="40" width="460" bgcolor="#555555">
+							<font color="#CCCCCC">学生编号：</font>
+							<input type="text" maxlength="10" id="sno" value="86064234" />(8位数字)
+						</td>
+						<td height="40" width="460" bgcolor="#555555">
+							<font color="#CCCCCC">学生名字：</font>
+							<input type="text" maxlength="10" id="username" value="楠楠" />(中文)
+						</td>
+					</tr>
+					<tr>
+						<td height="40" width="460" bgcolor="#555555">
+							<font color="#CCCCCC">邮箱地址：</font>
+							<input type="text" maxlength="10" id="email" value="1234532@qq.com" />
+						</td>
+						<td height="40" width="460" bgcolor="#555555">
+							<font color="#CCCCCC">电话号码：</font>
+							<input type="text" maxlength="10" id="tel" value="17823494332" />
+						</td>
+					</tr>
+					<tr>
+						<td height="53" width="980" bgcolor="#F5F5F5" colspan="2" align="center">
+							<input id="submit" type="submit" value="提交表单" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+		</form>
+		
+		<!--<button onclick="date()">显示今天是周几</button>
+		<button onclick="person()">循环遍历对象</button>-->
+		<!--<p>替换"suznz"为"zzzl"</p>
+		<button onclick="tihuan()">正则表达式替换</button>
+		<p id="app">请访问suznz</p>-->
+		
+	</body>
+	<script>
+		"use strict";
+		//是否带有小数
+		function isDecimal(strValue){
+			var objRegExp = /^\d+\.\d+$/;
+			return objRegExp.test(strValue);
+		}
+		//是否中文组成
+		function ischina(str){
+			let reg = /^[\u4E00-\u9FA5]{2,4}$/;//定义验证表达式
+			return reg.test(str); //进行验证
+			
+		}
+		//是否由8位数字组成
+		function isStuno(str){
+			var reg = /^[0-9]{8}$/; //定义验证表达式
+			return reg.test(str);
+		}
+		//验证电话号码格式
+		function isTelcode(str){
+			var reg = /^((0\d{2,3}-\d{7,8}) | (1[3584]/d{9}))$/;
+			return reg.test(str);
+		}
+		//验证邮箱地址
+		function isEmail(str){
+			var reg = /^\w+@[a-zA-Z0-9]{2,10}(?:\.[a-z]{2,4}){1,3}$/;
+			return reg.test(str);
+		}
+		function funl(){
+			if(!isStuno(document.getElementById("sno").value)){
+				alert("编号需为8位");
+				document.getElementById("sno").focus();
+				return false;
+			}
+			if(!ischina(document.getElementById("username").value)){
+				alert("名字必须为中文");
+				document.getElementById("username").focus();
+				return false;
+			}
+			if(!isEmail(document.getElementById("email").value)){
+				alert("邮箱地址错误");
+				document.getElementById("email").focus();
+				return false;
+			}
+			if(!isTelcode(document.getElementById("tel").value)){
+				alert("电话号码不对");
+				document.getElementById("tel").focus();
+				return false;
+			}
+			alert("提交成功");
+			return true;//提交
+		}
+		
+		
+		
+		
+		function tihuan(){
+			var x = document.getElementById("app").innerHTML;
+			var txt = x.replace(/suzNz/i,"zzzl");
+//			var txt = x.replace("suznz","zzzl");
+			document.getElementById("app").innerHTML = txt;
+		}
+		function date(){
+			var d = new Date().getDay();
+			switch(d){
+				case 0:x = "今天是周天";
+				break;
+				case 1:x = "今天是周一";
+				break;
+				case 2:x = "今天是周二";
+				break;
+				case 3:x = "今天是周三";
+				break;
+				case 4:x = "今天是周四";
+				break;
+				case 5:x = "今天是周五";
+				break;
+				case 6:x = "今天是周六";
+				break;
+			}
+			document.getElementById("p").innerHTML = x;
+		}
+		function person(){
+			var t= "";
+			var person = {no:"1234",name:"lololo",age:90};
+			for(x in person){
+				t = t+person[x];
+			}
+			document.getElementById("p").innerHTML = t;
+		}
+		//document.getElementById("p").innerHTML = new Date().constructor + function(){}.constructor;
+		
+	</script>
+</html>
