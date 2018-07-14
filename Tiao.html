@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jQueryRotate.js"></script>
+    <script src="js/jquery.fly.min.js"></script>
+    <script>
+        var man;
+        var box;
+        var prevBox;
+        var touchCount=0;
+
+        $(function(){
+            $('#Start').click(function () {
+                initPage();
+                $('#divS').fadeOut();
+                // box.children().remove();
+            });
+            var time;
+           //鼠标落下 抬起事件
+            man = $('.img');
+            man.mousedown(function(){
+               touchCount=0;
+               time = setInterval('startTime()',100);//每隔一定时间就调用函数
+            });
+            man.mouseup(function(){
+               clearInterval(time);//停止setInterval
+               // manFly();
+               manJump();
+              // updateView();
+           });
+            man.click(function () {
+                box.children().remove();
+            });
+            //计算选中box个数
+            // if(box.is(':checked')) {
+            //     var C = box.length;
+            //     alert('选中的个数：'+ C);
+            // }
+        });
+
+        function startTime(){
+            touchCount++;
+
+        }
+        //初始化页面
+        function initPage(){
+            //alert('init');
+            //初始化box
+            box=$('.box3');
+
+            var bg=$('.bg');
+            bg.append(box);
+           // box.offset({top:60,left:10});
+            prevBox=$('.box');
+
+        }
+        //小人跳
+        function manJump(){
+            //判断跳的方向
+            var jumpDirection = false;
+            if(box.offset().left - prevBox.offset().left > 0){
+                jumpDirection = 1;//向右跳
+            } else {
+                jumpDirection = -1;//向左跳
+            }
+            alert('按住时间为：'+touchCount+'毫秒');
+            //应该跳距离
+            var topDistance = man.offset().top + man.height() - (box.offset().top + box.height()/2);
+            var leftDistance = Math.abs(man.offset().left + man.width()/2 - (box.offset().left + box.width()/2));
+            //实际跳距离 10为鼠标点击时每50毫秒移动的距离
+            var jumpLDistance = touchCount*10*jumpDirection;
+            var jumpTDistance = touchCount*10*topDistance/leftDistance;
+            //向左移距离
+            var jumpL = jumpLDistance - man.offset().left;
+            //向上移距离
+            var jumpT = man.offset().top - jumpTDistance - 15;
+            man.fly({
+                start:{
+                    left:man.offset().left,//抛物体起点
+                    top:man.offset().top
+                },
+                end:{
+                    left:man.offset().left-touchCount*1000,//抛物体结束位置
+                    top:man.offset().left-touchCount*10
+                },
+                speed:1,//越大越快
+                //结束回调
+                 onEnd:function() {
+                 updateView();
+                 }
+
+            });
+            man.rotate({
+                angle:0,
+                animateTo:jumpDirection*360,
+                duration:600
+            });
+
+        }
+
+        function manFly(){
+
+            //alert('manfly test');
+
+            var jumpTop = box.offset().top+100;//offset偏移坐标
+            //计算prevBox和box的直线距离
+            var b1 = prevBox.offset().top - box.offset().top;
+            var b2 = prevBox.offset().left - box.offset().left;
+            var distance = Math.sqrt(b1*b1 + b2*b2);
+            var jumpLeft = distance/10 * touchCount;
+            $('.man').animate({left:150,top:jumpTop-50},1000);//修改div man的left和top
+
+        }
+        function updateView(){
+            alert('newbox');
+            $('.bg').children().animate({top:"100"},1000);
+            newBox();
+
+        }
+        //创建新的box
+        function newBox() {
+            var newB = $('<img src="img/box3.png"/>');
+            $('.bg').append(newB);
+            var LorR = parseInt(Math.random() * 2);
+            var left;
+            if (LorR === 0) {
+                var boxL = box.offset().left;
+                left = boxL - parseInt(Math.random() * 51 + 50 - newB.width());
+            }
+            else {
+                boxL = box.offset().left;
+                left = boxL + parseInt(Math.random() * 51 + 50 + newB.width());
+            }
+            var top;
+            var randomSpace = Random(Math.random()*3);
+            top = box.offset().top - randomSpace +20;
+
+            prevBox = box;
+            box = newB;
+        }
+
+    </script>
+
+    <style type="text/css">
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+        .bg{
+            background-color: #F7ECB5;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            position: absolute;/*raletive相对正常位置移动*/
+            /*clear:both;*/
+        }
+        .man{
+            position: absolute;/*位置相对于最近的已定位父元素，没有已定位的父元素，位置相对于<html>*/
+            margin:1px;
+            top: 410px;
+            left: 45%;
+
+        }
+        .box{
+            position: absolute;
+            top: 270px;
+            right: 32%;
+        }
+        #divS{
+            opacity: 0.7;
+            background-color: #050205;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+        #Start{
+            position: absolute;
+            top: 44%;
+            left: 47%;
+            width: 130px;
+            background-color: #5a596d;
+            font-size: 30px;
+
+
+        }
+    </style>
+</head>
+<body>
+    <div class="bg">
+        <div class="box"><img src="img/box1.png"/></div>
+        <div class="box3"><img src="img/box3.png"/></div>
+        <div class="man"><img src="img/man.png" class="img"/></div>
+    </div>
+    <div id="divS">
+        <input type="button" id="Start" value="Go Game" />
+    </div>
+</body>
+</html>
