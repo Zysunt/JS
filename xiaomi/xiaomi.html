@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>静态小米官网</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#top{
+				height: 60px;
+				background-color: #000000;
+			}
+			#top ul{
+				list-style: none;
+				overflow: hidden;
+				padding: 20px 0;
+			}
+			#top li{
+				display: inline;
+			}
+			a{
+				padding: 20px;
+				color:wheat;
+				text-decoration: none;
+			}
+			a:hover{
+				color: darkcyan;
+			}
+			#register{
+				margin-left: 120px;
+			}
+			
+			#nav{
+				height: 57px;
+				padding: 10px 60px;
+				margin-top: 30px;
+				
+			}
+			#nav_logo{
+				float: left;
+				height: 57px;
+				
+			}
+			#nav_content{
+				float: right;
+				height: 57px;
+			}
+			#nav_content a{
+				line-height: 60px;
+				color: gray;
+				padding:5px;
+			
+			}
+			#nav_content a:hover{
+				color: hotpink;
+			}
+			.search{
+				margin-left: 70px;
+				margin-right: 0;
+				width: 300px;
+				height: 30px;
+				border-radius: 30px;
+			}
+			.search_btn{
+				border-radius: 10px;
+				background-color: lavender;
+				width: 40px;
+				height: 27px;
+			}
+			form{
+				display: inline;
+			}
+			#content_left a{
+				display: block;
+				color: white;
+				background-color: gainsboro;
+				width: 200px;
+				margin-left: 60px;
+			}
+			#content_left a:hover{
+				background-color: coral;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="top">
+			<ul>
+				<li>
+					<a href="#">小米网</a>
+				</li>
+				<li>
+					<a href="#">MIUI</a>
+				</li>
+				<li>
+					<a href="#">米聊</a>
+				</li>
+				<li>
+					<a href="#">游戏</a>
+				</li>
+				<li>
+					<a href="#">多看阅读</a>
+				</li>
+				<li>
+					<a href="#">云服务</a>
+				</li>
+				<li>
+					<a href="#">小米移动版</a>
+				</li>
+				<li>
+					<a href="#">问题反馈</a>
+				</li>
+				<li>
+					<a id="register" href="#">注册</a>
+				</li>
+				<li>
+					<a href="#">登录</a>
+				</li>
+				<li><a href="#">购物车(0)</a></li>
+			</ul>
+		</div>
+		<div id="nav">
+			<div id="nav_logo">
+				<img src="img/logo.png" />
+			</div>
+			<div id="nav_content">
+				<a id="xiaomi" href="">小米手机
+				<a href="">红米
+				<a href="">平板
+				<a href="">平板·盒子
+				<a href="">路由器
+				<a href="">智能硬件
+				<a href="">服务
+				<a href="">社区</a>
+				<form name="">
+					<input type="search" class="search" name="search" value="" />
+					<input type="submit" class="search_btn" value="🔍"/>
+				</form>
+			</div>
+		</div>
+		
+		<div id="content">
+			<div id="content_left">
+				<a href="">小米手机</a>
+				<a href="">红米</a>
+				<a href="">平板</a>
+				<a href="">平板·盒子</a>
+				<a href="">路由器</a>
+				<a href="">智能硬件</a>
+				<a href="">服务</a>
+				<a href="">社区</a>
+			</div>
+		</div>
+		<script>
+			var i = 0;
+			function switchImg() {
+				i++;
+				var content = document.getElementById("content");
+				var src = "url('img/I.jpg')";
+				src = src.replace(/I/, i % 5);
+				content.style.backgroundImage = src;
+//				var img = /
+//				if(img.style.width() > 700){
+//					img.style.width() = "700px";
+//				}
+			}
+			setInterval("switchImg()", 2000);
+		</script>
+	</body>
+</html>
